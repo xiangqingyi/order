@@ -1,0 +1,6 @@
+{
+    "directory": "public/assets/plugins",
+    "proxy": "http://10.134.98.135:80",
+    "https-proxy": "http://10.134.98.135:80"
+}
+

@@ -1,0 +1,23 @@
+{
+  "name": "",
+  "description": "这是node+mysql的一简易的订餐系统",
+  "main": "",
+  "authors": [
+    "xiangqingyi <1352493573@qq.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "nodejs",
+    "mysql",
+    "ejs"
+  ],
+  "homepage": "https://github.com/electron/electron-quick-start",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/assets/plugins",
+    "test",
+    "tests"
+  ]
+}
