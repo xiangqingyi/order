@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "order",
   "description": "这是node+mysql的一简易的订餐系统",
   "main": "",
   "authors": [
@@ -19,5 +19,13 @@
     "public/assets/plugins",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "html5shiv": "^3.7.3",
+    "layer": "^3.0.3",
+    "modernizer": "^2.8.2",
+    "respond": "^1.4.2"
+  }
+  
 }
