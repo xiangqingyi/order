@@ -9,13 +9,17 @@ const logger = require('morgan');
 const config = require('./config/config');
 const compression = require('compression');
 const helmet = require('helmet');
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const core = require('./libs/core');
+const apiRoute = require('./routes/api');
+const appRoute = require('./routes/app');
+const serverRoute = require('./routes/server');
+
 
 const app = express();
 
 app.locals = {
   title: config.title,
+  staticdir: config.homepage
 }
 
 // view engine setup
@@ -28,7 +32,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(config.homepage,express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: config.session.secret,
   name: 'order',
@@ -38,9 +42,9 @@ app.use(session({
 app.use(compression());
 app.use(helmet.noCache());  //nocache 不设置缓存
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+app.use(config.homepage, apiRoute);
+app.use(config.homepage, appRoute);
+app.use(config.homepage, serverRoute);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -52,9 +56,12 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
+let server = app.listen(config.port || 1001,function () {
+  core.logger.info('网站服务启动' + server.address().port);
+  core.logger.info('mysql database:' + config.db.database);
+})
 module.exports = app;
