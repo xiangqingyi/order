@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "cross-env NODE_ENV=local ./node_modules/.bin/mocha --ui bdd --colors",
+    "start": "npm run local",
+    "local": "cross-env NODE_ENV=local nodemon ./app.js --ignore public/ --ignore views/",
+    "dev": "cross-env NODE_ENV=development nodemon ./app.js --ignore public/ --ignore views/",
+    "server": "cross-env NODE_ENV=production node server"
   },
   "dependencies": {
     "axios": "^0.18.0",
