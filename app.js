@@ -7,6 +7,8 @@ const session = require('express-session');
 const redisStore = require('connect-redis')(session);  // redis存储
 const logger = require('morgan');
 const config = require('./config/config');
+const compression = require('compression');
+const helmet = require('helmet');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
