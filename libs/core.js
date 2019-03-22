@@ -2,7 +2,7 @@
 
 let fs = require('fs');
 let path = require('path');
-let config = require('../config');
+let config = require('../config/config');
 let qs = require('qs');
 let _ = require('lodash');
 let axios = require('axios');
@@ -154,7 +154,7 @@ exports.logger = new (winston.Logger)({
             name: 'info-file',
             datePattern: 'yyyy-MM-dd.',
             prepend: true,   //日期在開頭
-            filename: path.join(config.path.logDir, '/filelog-info.log'),
+            filename: path.join(config.logDir, '/filelog-info.log'),
             timestamp: true,
             level: 'info'
         }),
@@ -162,7 +162,7 @@ exports.logger = new (winston.Logger)({
             name: 'error-file',
             datePattern: 'yyyy-MM-dd.',
             prepend: true,   //日期在開頭
-            filename: path.join(config.path.logDir, '/filelog-error.log'),
+            filename: path.join(config.logDir, '/filelog-error.log'),
             timestamp: true,
             level: 'error'
         }),
@@ -170,7 +170,7 @@ exports.logger = new (winston.Logger)({
             name: 'debug-file',
             datePattern: 'yyyy-MM-dd.',
             prepend: true,   //日期在開頭
-            filename: path.join(config.path.logDir, '/filelog-debug.log'),
+            filename: path.join(config.logDir, '/filelog-debug.log'),
             timestamp: true,
             level: 'debug'
         }),        
@@ -178,7 +178,7 @@ exports.logger = new (winston.Logger)({
     exceptionHandlers: [
         new (winston.transports.File)({
             name: 'exceptions-file',
-            filename: path.join(config.path.logDir, '/exceptions-file.log'),
+            filename: path.join(config.logDir, '/exceptions-file.log'),
             timestamp: true,
             humanReadableUnhandledException: true,
             json: true
