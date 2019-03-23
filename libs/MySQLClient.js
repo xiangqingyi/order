@@ -2,8 +2,8 @@ const config = require('../config/config');
 const mysql = require('mysql');
 
 function MySQLClient() {
-    const connection;
-    function connection(callback) {
+    var connection;  //只能有用var来定义
+    function connect(callback) {
         connection = mysql.createConnection(config.db);
         connection.on('error',function (err) {
             if (err.code === 'PROTOCOL_CONNECTION_LOST') {

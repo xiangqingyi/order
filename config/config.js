@@ -1,6 +1,8 @@
 'use strict';
-
+let apppath = process.cwd();
 const config = {
+    port: 1001,
+    logDir: apppath + '/logs',
     db: {
         host: 'localhost',
         port: 3306,
@@ -13,8 +15,8 @@ const config = {
         secret: 'ordersecret'
     },
     homepage: '/order',
-    api: 'order/api',
-    admin: 'order/admin',
+    api: '/order/api',
+    admin: '/order/admin',
 
 };
 
