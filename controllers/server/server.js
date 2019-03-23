@@ -50,3 +50,22 @@ exports.loginout = async (req, res) => {
         })
     }
 }
+
+
+exports.indexHandler = async (req, res) => {
+    const userid = req.session.user.id;
+    if (userid) {
+        mysqlClientInstance.exec('SELECT * FROM t_restaurant limit 0,10',null,function(err, rows) {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                return res.render('restaurant/list',{
+                    rows: rows
+                })
+            }
+        })
+    } else{
+        return res.redirect('/login')
+    }
+}
