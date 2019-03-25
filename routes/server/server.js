@@ -6,7 +6,7 @@ router.all('/login', server.login);  // order/server.lofin
 router.all('/loginout', server.loginout);
 
 router.get('/dishes', server.dishesIndex) // order/server/dishes  菜单管理
-router.all('/adddish', server.addDish) // order/server/adddish 增加菜品
+router.all('/adddish/:restaurantId', server.addDish) // order/server/adddish 增加菜品
 router.post('/delete/alldishes/:restaurantId', server.deleteAllRestaurants) // order/server/delete/alldishes/:restaurantId
 router.post('/delete/dish/:id', server.deleteDish) // 删除指定菜品 order/server/delete/dish/:id
 router.get('/showdish/:id', server.showDish) // 显示某个dish order/server/showdish/:id
