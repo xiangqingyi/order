@@ -43,7 +43,7 @@ app.use(compression());
 app.use(helmet.noCache());  //nocache 不设置缓存
 
 // app.use(config.homepage, apiRoute);
-app.use('/orderapp', appRoute);
+app.use(config.homepage, appRoute);
 app.use(config.homepage, serverRoute);
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
