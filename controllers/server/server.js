@@ -404,3 +404,164 @@ exports.editRestaurant = async (req, res) => {
     }
 
 }
+
+// 用户管理 user
+exports.userIndex = async (req, res) => {
+    const sql = "SELECT id, name, realName, phoneNumber FROM t_user";
+    mysqlClientInstance.exec(sql, null, function(err, users) {
+        if(err) {
+            return res.send({
+                code: 1,
+                message: '获取用户失败'
+            })
+        } else {
+            if (!users) {
+                users = [];
+            }
+            return res.send('admin/user/index', {
+                users: users
+            })
+        }
+    })
+}
+
+// 添加用户
+exports.addUser = async (req, res) => {
+    const user = req.body;
+
+    if (user) {
+        const sql = "INSERT INTO t_user (icon, name, realName, birthday, phoneNumber, email, country, city, level, levelName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const icon = user.icon;
+        const name = user.name;
+        const realName = user.realName;
+        const birthday = user.birthday;
+        const phoneNumber = user.phoneNumber;
+        const email = user.email;
+        const country = user.country;
+        const city = user.city;
+        const level = user.level;
+        const levelName = '武汉热干面';
+        mysqlClientInstance.exec(sql, [icon, name, realName, birthday, phoneNumber, email, country, city, level, levelName], function(err, rows) {
+            if (err) {
+                return res.send({
+                    code: 1,
+                    message: '新增用户失败'
+                })
+            } else {
+                return res.send({
+                    code: 0,
+                    message: '新增用户成功'
+                })
+            }
+        })
+    } else {
+        return res.send({
+            code: 1,
+            message: '获取前端传来的数据失败'
+        })
+    }
+}
+
+exports.deleteAllUsers = async (req, res) => {
+    const sql = "DELETE FROM t_user WHERE id = ?";
+    mysqlClientInstance.exec(sql, [req.params.userId], function (err, rows) {
+        if (err) {
+            return res.send({
+                code: 1,
+                message: '删除全部的用户失败'
+            }) 
+        } else {
+            return res.send({
+                code: 0,
+                message: '删除全部用户成功'
+            })
+        }
+    })
+}
+
+exports.deleteUser = async (req, res) => {
+    const sql = "DELETE FROM t_user WHERE id=?";
+    mysqlClientInstance.exec(sql, [req.params.userId], function(err, rows) {
+        if (err) {
+            return res.send({
+                code: 1,
+                message: '删除用户失败'
+            })
+        } else {
+            return res.send({
+                code: 0,
+                message: '删除该用户成功'
+            })
+        }
+    })
+}
+
+exports.showUser = async (req,res) => {
+    const sql = "SELECT * FROM t_user WHERE id = ?";
+    mysqlClientInstance.exec(sql, [req.params.userId], function (err, rows) {
+        if (err || !rows || rows.length === 0) {
+            return res.send({
+                code: 1,
+                message: '获取指定用户失败'
+            })
+        } else {
+            return res.render('admin/user/detail', {
+                user: rows[0]
+            })
+        }
+    })
+}
+
+// 编辑指定用户
+exports.editUser = async (req, res) => {
+    if (req.method === 'GET') {
+        const sql = "SELECT * FROM t_user WHERE id = ?";
+        mysqlClientInstance.exec(sql, [req.params.userId],function(err, rows) {
+            if (err || !rows || rows.length === 0) {
+                return res.render({
+                    code: 1,
+                    message: '获取用户失败'
+                })
+            } else {
+                return res.render('admin/user/edit', {
+                    user: rows[0]
+                })
+            }
+        })
+    } else if (req.method === 'POST') {
+        const userId = req.params.userId;
+        const user = req.body;
+        if (userId && user) {
+            const sql = "UPDATE t_user SET icon=?, name=?, realName=?, birthday=?, phoneNumber=?, email=?, country=?, city=?, level=?, levelName=? WHERE id=" + userId;
+            const icon = user.icon;
+            const name = user.name;
+            const realName = user.realName;
+            const birthday = user.birthday;
+            const phoneNumber = user.phoneNumber;
+            const email = user.email;
+            const country = user.country;
+            const city = user.city;
+            const level = user.level;
+            const levelName = "武汉热干面"
+
+            mysqlClientInstance.exec(sql, [icon, name,realName, birthday, phoneNumber, email, country, city, level, levelName], function(err, rows) {
+                if (err) {
+                    return res.send({
+                        code: 1,
+                        message: '更新用户失败'
+                    })
+                } else {
+                    return res.send({
+                        code: 0,
+                        message: '更新用户成功'
+                    })
+                }
+            })
+        } else {
+            return res.send({
+                code: 1,
+                message: '获取前端传来的数据失败'
+            })
+        }
+    }
+}
