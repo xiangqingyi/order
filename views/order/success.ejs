@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>订餐厅———提交成功</title>
+
+    <link rel="stylesheet" href="<%= staticdir %>/assets/plugins/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%= staticdir %>/css/style.css">
+    <script src="<%= staticdir %>/assets/plugins/jquery/dist/jquery.min.js"></script>
+    <script src="<%= staticdir %>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="<%= staticdir %>/assets/plugins/axios/axios.min.js"></script>
+    <script src="<%= staticdir %>/js/main.js"></script>
+    <script src="<%= staticdir %>/js/order-success.js"></script>
+
+</head>
+<body style="font-size: 12px">
+
+<div class="container">
+    <div class="row" style="margin-top: 5px">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 hidden-sm hidden-xs">
+
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div id="container" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="h1 text-center">订餐厅</div>
+                </div>
+                <div class="text-center" style="padding-top: 40px; padding-bottom: 40px">
+                    <img src="/images/success.png" style="width: 100px"/>
+                    <div class="h1">
+                        提交成功
+                    </div>
+                    <div class="h4">
+                        <span>总价：</span><span id="totalPrice"></span><span>元</span>
+                    </div>
+                    <div id="dishes" style="font-size: 14px; color: #c72323">
+
+                    </div>
+
+                    <button class="btn btn-success" style="width: 70%; margin-top: 30px">确定</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 hidden-sm hidden-xs">
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
