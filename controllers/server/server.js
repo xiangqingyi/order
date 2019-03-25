@@ -70,8 +70,8 @@ exports.indexHandler = async (req, res) => {
     }
 }
 
-// 后台首页
-exports.adminIndex = async (req, res) => {
+// 菜单管理
+exports.dishesIndex = async (req, res) => {
     const restaurantId = req.params.restaurantId;
     const sql = "SELECT * FROM t_dishes WHERE restaurant_id=?";
     //查询菜单表
