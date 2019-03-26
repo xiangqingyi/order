@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<%= staticdir %>/css/style.css">
     <script src="<%= staticdir %>/assets/plugins/jquery/dist/jquery.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="<%= staticdir %>/assets/plugins/layer/dist/layer.js"></script>
     <script src="<%= staticdir %>/assets/plugins/axios/axios.min.js"></script>
     <script src="<%= staticdir %>/js/main.js"></script>
 
@@ -84,7 +85,7 @@
 
                 <div class="text-center" style="margin-top: 20px; margin-bottom: 20px">
                     <button id="deleteAllBtn" type="button" class="btn btn-success" style="width: 40%">删除全部</button>
-                    <a href="/admin/restaurant/<%= restaurantId %>/dishes/add" class="btn btn-success"
+                    <a href="/order/server/adddish/<%= restaurantId %>" class="btn btn-success"
                        style="width: 40%">添加菜目</a>
                 </div>
             </div>
