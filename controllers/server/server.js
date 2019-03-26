@@ -83,7 +83,8 @@ exports.dishesIndex = async (req, res) => {
                 rows = [];
             }
             return res.render('admin/dishes/index', {
-                restaurantId: restaurantId
+                restaurantId: restaurantId,
+                dishes: rows
             })
         }
     })
@@ -276,7 +277,7 @@ exports.addRestaurant = async (req, res) => {
             const address = restaurant.address;
             const level = restaurant.level;
             const levelName = "三星级";
-            const classifies = restaurants.classifies;
+            const classifies = restaurant.classifies;
             mysqlClientInstance.exec(sql, [icon, name, phoneNumber, email, city, address, level, levelName, classifies], function (err, result, fields) {
                 if (err) {
                     return res.send({
