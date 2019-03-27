@@ -8,9 +8,10 @@ exports.login = async (req, res) => {
     if (req.method === 'GET') {
         return res.render('login' )
     } else if (req.method === 'POST') {
-        const obj = _.pick(req.body, 'userName', 'passwrod');
+        const obj = _.pick(req.body, 'userName', 'password');
+        console.log(obj);
         const sha = crypto.createHash('md5');
-        sha.update(obj.passwrod);
+        sha.update(obj.password);
         const passwrod_md5 = sha.digest('hex');
         mysqlClientInstance.exec('SELECT id, name, password FROM t_user WHERE name=? AND password=?',[obj.userName, passwrod_md5], function(err, rows) {
             if (err) {
