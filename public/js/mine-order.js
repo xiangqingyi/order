@@ -1,4 +1,3 @@
-import axios from "axios";
 
 $(document).ready(function() {
     axios.get(window.location.origin + '/order/app/ordermineapi').then(function(res) {
