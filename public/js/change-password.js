@@ -21,6 +21,8 @@ $(document).ready(function() {
                 showAlert('请至少输入6位密码');
                 return;
             } 
+
+            
         } else {
             showAlert('请输入新密码，6-16个字符');
             return;
