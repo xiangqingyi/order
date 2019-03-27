@@ -13,7 +13,7 @@
     <script src="<%= staticdir %>/assets/plugins/jquery/dist/jquery.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/layer/dist/layer.js"></script>
-    <script src="<%= staticdir %>/assets/plugins/axios/axios.min.js"></script>
+    <script src="<%= staticdir %>/assets/plugins/axios/dist/axios.min.js"></script>
     <script src="<%= staticdir %>/js/main.js"></script>
 
 </head>
@@ -29,7 +29,7 @@
                 <div class="panel-heading text-center">
                     <div class="h1" style="display: inline-block">订餐厅</div>
                     <a href="/mine">
-                        <img src="/images/user_default_icon.png" class="img-circle pull-right"
+                        <img src="<%= staticdir %>/images/user_default_icon.png" class="img-circle pull-right"
                              style="width: 40px; margin-top: 10px"/>
                     </a>
                 </div>
@@ -80,11 +80,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="pull-right" style="height: 50px; padding-top: 12.5px; padding-bottom: 12.55px">
-                                                    <img id="decrease_<%= i %>_<%= j %>" src="/images/decrease.png" class="img-responsive img-rounded"
+                                                    <img id="decrease_<%= i %>_<%= j %>" src="<%= staticdir %>/images/decrease.png" class="img-responsive img-rounded"
                                                          style="width: 30px; height: 30px; display: inline-block">
                                                     <span id="count_<%= i %>_<%= j %>" style="width: 10px; height: 30px; display: inline-block; line-height:30px; vertical-align: middle"
                                                           class="text-center">0</span>
-                                                    <img id="increase_<%= i %>_<%= j %>" src="/images/increase.png" class="img-responsive img-rounded"
+                                                    <img id="increase_<%= i %>_<%= j %>" src="<%= staticdir %>/images/increase.png" class="img-responsive img-rounded"
                                                          style="width: 30px; height: 30px; display: inline-block">
                                                 </div>
                                             </div>
@@ -203,7 +203,7 @@
                 showAlert('请至少选择一个菜');
             }
 
-            asyncPost('/order', {orders: JSON.stringify(orders)}, function (response) {      //请求成功时处理
+            asyncPost(window.location.origin+ '/order/app/addorder', {orders: JSON.stringify(orders)}, function (response) {      //请求成功时处理
                 var errMsg = '创建订单失败';
                 if (response) {
                     if (response.code == 0) {
