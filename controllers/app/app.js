@@ -87,7 +87,7 @@ exports.addOrder = async (req,res) => {
                                         code: 1
                                     })
                                 } else {
-                                    if (i === orders.length -1){
+                                    if (i === orders.length - 1){
                                         return res.send({
                                             status: true,
                                             message: '提交订单成功',
@@ -138,13 +138,13 @@ exports.addOrderSuccess = async (req, res) => {
     }
 }
 
-// 取消订单
+// 取消订单 (只取消当天的订单  所有的操作的都是基于当天的时间)
 exports.cancalOrder = async (req, res) => {
     if (req.method === 'POST') {
         const userid = req.session.user.id;
         if (userid) {
             const today = dtime(new Date()).format('YYYY-MM-DD');
-            mysqlClientInstance.exec('DELETE FROM t_order WHERE user_id=?',[userid],function(err, rows) {
+            mysqlClientInstance.exec('DELETE FROM t_order WHERE user_id=? AND selected_date=?',[userid, today],function(err, rows) {
                 if (err) {
                     return res.send({
                         code: 1,
@@ -213,5 +213,26 @@ exports.getMineOrder = async (req,res) => {
                 }
             }
         })
+    }
+}
+
+exports.index = async (req, res) => {
+    const user = req.session.user;
+    if (user){
+        mysqlClientInstance.exec('SELECT * FROM t_restaurant', null, function(err, rows) {
+            if (err) {
+                return res.send({
+                    code: 1,
+                    message: '查找餐厅失败',
+                    status: false
+                })
+            } else {
+                return res.render('restaurant/list', {
+                    rows: rows
+                })
+            }
+        })
+    } else {
+        return res.redirect('/order/server/login');
     }
 }

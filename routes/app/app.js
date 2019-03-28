@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const app = require('../../controllers/app/app');
 
+router.get('/restaurants', app.index); // /order/app
+
 router.get('/list/:restaurantId', app.restaurantlist);
 // 订单模块
 router.post('/addorder', app.addOrder); // 提交订单 /order/app/addorder
