@@ -248,7 +248,7 @@ function handleURL() {
             if (urlPath == '/' && item == '') {
                 item = 'index';
             }
-            $('#' + item).attr("class", "active");
+           // $('#' + item).attr("class", "active");
         }
         handleURLInternal(item);
     }
