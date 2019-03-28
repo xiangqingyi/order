@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const crypto = require('crypto');
 const MySQLClient = require('../../libs/MySQLClient');
 const mysqlClientInstance = new MySQLClient();
+const dtime = require('time-formater');
 const _ = require('lodash');
 
 exports.login = async (req, res) => {
@@ -566,4 +567,88 @@ exports.editUser = async (req, res) => {
             })
         }
     }
+}
+
+// 订单管理模块
+exports.ordersIndex = async (req, res) => {
+    const today = dtime(new Date()).format('YYYY-MM-DD');
+    const sql = "SELECT t_user.realName AS realName, t_restaurant.name AS restaurant_name, t_restaurant.phoneNumber AS restaurant_phoneNumber, t_dishes.name AS dishes_name, t_dishes.price AS price, t_order.dishes_count AS dishes_count " +
+    "FROM t_user, t_order, t_restaurant, t_dishes " +
+    "WHERE t_order.selected_date = ? AND t_order.user_id = t_user.id AND t_order.dishes_id = t_dishes.id AND t_dishes.restaurant_id = t_restaurant.id";
+    mysqlClientInstance.exec(sql, [today], function(err, rows) {
+        if (err) {
+            return res.send({
+                code: 1,
+                message: '查找数据失败'
+            })
+        } else {
+            if (!rows) {
+                rows = [];
+            }
+            const obj = {orders: rows};
+            obj.restaurants = null;
+            obj.totalPerson = 0;
+            obj.totalPrice = 0;
+            const personSet = new ArrayList();
+            const restaurantMap = new Map();
+            rows.forEach(function(item) {
+                if (!restaurantMap.get(item.restaurant_name)) {
+                    restaurantMap.put(item.restaurant_name, item);
+                }
+                obj.totalPrice += item.price * item.dishes_count;
+                // 统计人数
+                if (!personSet.contains(item.realName)) {
+                    personSet.add(item.realName);
+                }
+                obj.totalPerson = personSet.size();
+            });
+            const size = restaurantMap.size();
+            if (size > 0) {
+                obj.restaurants = [];
+                const names =restaurantMap.keySet();   //  返回整个数组
+                for (const i = 0; i < names.length; i++) {
+                    const name = names[i];
+                    const restaurant = restaurantMap.get(name);
+                    if (restaurant) {
+                        const newRestaurant = {};
+                        newRestaurant.name = restaurant.restaurant_name;
+                        newRestaurant.phoneNumber = restaurant.restaurant_phoneNumber;
+                        newRestaurant.dishes = [];
+                        const keys = [];
+                        const nameCountMap = {};
+                        for (const j = 0; j < rows.length; j++) {
+                            const item = rows[j];
+                            if (name == item.restaurant_name) {
+                                const dish = {};
+                                dish.realName = item.realName;
+                                dish.name = item.dishes_name;
+                                dish.count = item.dishes_count;
+                                dish.price = item.price;
+                                newRestaurant.dishes.push(dish);
+
+                                const count = nameCountMap[dish.name];
+                                if (count) {
+                                    count += dish.count;
+                                    nameCountMap[dish.name] = count;
+                                } else {
+                                    nameCountMap[dish.name] = dish.count;
+                                    keys.push(dish.name);
+                                }
+                            }
+                        }
+                        newRestaurant.details = [];
+                        keys.forEach(function(name) {
+                            const count = nameCountMap[name];
+                            newRestaurant.details.push({
+                                name: name,
+                                count: count
+                            })
+                        })
+                        obj.restaurants.push(newRestaurant);
+                    }
+                }
+            }
+            return res.render('admin/order', obj);
+        }
+    })
 }
