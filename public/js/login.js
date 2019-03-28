@@ -13,7 +13,7 @@ $(document).ready(function () {
             password: password
         }).then(function(res) {
             if (res.data.status) {
-                location.href = '/order/app/ordermine';
+                location.href = '/order/app/list/1';
                 return;
             } else {
                 showAlert(message);

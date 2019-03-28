@@ -1,6 +1,8 @@
 
 $(document).ready(function() {
+    console.log('test');
     axios.get(window.location.origin + '/order/app/ordermineapi').then(function(res) {
+        console.log(res);
         if (res) {
             if (res.data.code === 1 && res.data.dishes && res.data.dishes.length) {
                 const totalPrice = 0;

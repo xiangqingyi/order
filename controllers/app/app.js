@@ -78,7 +78,7 @@ exports.addOrder = async (req,res) => {
                             const order = orders[i];
                             const dishes_id = order.dishes_id;
                             const dishes_count = order.dishes_count;
-                            mysqlClientInstance.exec('INSERT INTO t_order (selected_date,user_id,dishes_id,dishes_count) VALUES (?, ?, ?, ?)',[today, userId, dishes_id, dishes_count],function(err,rows) {
+                            mysqlClientInstance.exec('INSERT INTO t_order (selected_date,user_id,dishes_id,dishes_count) VALUES (?, ?, ?, ?)',[today, userid, dishes_id, dishes_count],function(err,rows) {
                                 if (err) {
                                     console.log(err.stack);
                                     return res.send({
@@ -170,6 +170,7 @@ exports.cancalOrder = async (req, res) => {
 }
 
 exports.getMineOrder = async (req,res) => {
+    console.log(req.session.user);
     const userid = req.session.user.id;
     if (!userid) {
         return res.send({
@@ -179,7 +180,7 @@ exports.getMineOrder = async (req,res) => {
         })
     } else {
         const today = dtime(new Date()).format('YYYY-MM-DD');
-        mysqlClientInstance.exec('SELECT id, dishes_id, dishes_count FROM t_order WHERE user_id = ? AND selected_date = ?', [userId, today],function(err, rows) {
+        mysqlClientInstance.exec('SELECT id, dishes_id, dishes_count FROM t_order WHERE user_id = ? AND selected_date = ?', [userid, today],function(err, orders) {
             if (err) {
                 return res.send({
                     code: 1,
@@ -189,7 +190,7 @@ exports.getMineOrder = async (req,res) => {
             } else {
                 const arr = [];
                 for (const i = 0; i < orders.length; i++) {
-                    mysqlClientInstance.exec('SELECT name,price FROM t_dishes WHERE id=?',[orders[i].dishes_id], function(err, rows) {
+                    mysqlClientInstance.exec('SELECT name,price FROM t_dishes WHERE id=?',[orders[i].dishes_id], function(err, dishes) {
                         if (err) {
                             return res.send({
                                 code: 1,
