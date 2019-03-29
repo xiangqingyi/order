@@ -16,7 +16,7 @@ $(document).ready(function () {
                 location.href = '/order/app/restaurants';
                 return;
             } else {
-                showAlert(message);
+                showAlert(res.data.message);
             }
         })
     })
