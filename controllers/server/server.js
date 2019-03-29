@@ -408,6 +408,28 @@ exports.editRestaurant = async (req, res) => {
 
 }
 
+// 显示指定餐厅的所有的菜品
+exports.showRestaurantDishes = async (req, res) => {
+    const restaurantId = req.params.restaurantId;
+    const sql = 'SELECT * FROM t_dishes WHERE restaurant_id=?';
+    mysqlClientInstance.exec(sql, [restaurantId], function(err, rows) {
+        if (err) {
+            return res.send({
+                code: 1,
+                message: '获取指定餐厅的菜品失败'
+            })
+        } else {
+            if (!rows) {
+                rows = [];
+            }
+            return res.render('admin/dishes/index',{
+                dishes: rows,
+                restaurantId: restaurantId
+            })
+        }
+    })
+}
+
 // 用户管理 user
 exports.userIndex = async (req, res) => {
     const sql = "SELECT id, name, realName, phoneNumber FROM t_user";
@@ -421,7 +443,7 @@ exports.userIndex = async (req, res) => {
             if (!users) {
                 users = [];
             }
-            return res.send('admin/user/index', {
+            return res.render('admin/user/index', {
                 users: users
             })
         }
@@ -430,39 +452,45 @@ exports.userIndex = async (req, res) => {
 
 // 添加用户
 exports.addUser = async (req, res) => {
-    const user = req.body;
+    if (req.method === 'POST') {
+        const user = req.body;
 
-    if (user) {
-        const sql = "INSERT INTO t_user (icon, name, realName, birthday, phoneNumber, email, country, city, level, levelName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        const icon = user.icon;
-        const name = user.name;
-        const realName = user.realName;
-        const birthday = user.birthday;
-        const phoneNumber = user.phoneNumber;
-        const email = user.email;
-        const country = user.country;
-        const city = user.city;
-        const level = user.level;
-        const levelName = '武汉热干面';
-        mysqlClientInstance.exec(sql, [icon, name, realName, birthday, phoneNumber, email, country, city, level, levelName], function(err, rows) {
-            if (err) {
-                return res.send({
-                    code: 1,
-                    message: '新增用户失败'
-                })
-            } else {
-                return res.send({
-                    code: 0,
-                    message: '新增用户成功'
-                })
-            }
-        })
-    } else {
-        return res.send({
-            code: 1,
-            message: '获取前端传来的数据失败'
-        })
+        if (user) {
+            const sql = "INSERT INTO t_user (icon, name, realName, birthday, phoneNumber, email, country, city, level, levelName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            const icon = user.icon;
+            const name = user.name;
+            const realName = user.realName;
+            const birthday = user.birthday;
+            const phoneNumber = user.phoneNumber;
+            const email = user.email;
+            const country = user.country;
+            const city = user.city;
+            const level = user.level;
+            const levelName = '武汉热干面';
+            mysqlClientInstance.exec(sql, [icon, name, realName, birthday, phoneNumber, email, country, city, level, levelName], function(err, rows) {
+                if (err) {
+                    return res.send({
+                        code: 1,
+                        message: '新增用户失败'
+                    })
+                } else {
+                    return res.send({
+                        code: 0,
+                        message: '新增用户成功'
+                    })
+                }
+            })
+        } else {
+            return res.send({
+                code: 1,
+                message: '获取前端传来的数据失败'
+            })
+        }
+    } else if (req.method === 'GET') {
+        return res.render('admin/user/add');
     }
+
+
 }
 
 exports.deleteAllUsers = async (req, res) => {
@@ -589,66 +617,64 @@ exports.ordersIndex = async (req, res) => {
             obj.restaurants = null;
             obj.totalPerson = 0;
             obj.totalPrice = 0;
-            const personSet = new ArrayList();
-            const restaurantMap = new Map();
+            const personArr = [];
+            const restaurantArr = [];
             rows.forEach(function(item) {
-                if (!restaurantMap.get(item.restaurant_name)) {
-                    restaurantMap.put(item.restaurant_name, item);
-                }
+                console.log(item);
+                restaurantArr.push(item);
                 obj.totalPrice += item.price * item.dishes_count;
                 // 统计人数
-                if (!personSet.contains(item.realName)) {
-                    personSet.add(item.realName);
-                }
-                obj.totalPerson = personSet.size();
-            });
-            const size = restaurantMap.size();
+                personArr.push(item.realName);
+                obj.totalPerson = personArr.length;
+            })
+            const size = restaurantArr.length;  // 餐厅数量
             if (size > 0) {
                 obj.restaurants = [];
-                const names =restaurantMap.keySet();   //  返回整个数组
-                for (const i = 0; i < names.length; i++) {
-                    const name = names[i];
-                    const restaurant = restaurantMap.get(name);
-                    if (restaurant) {
-                        const newRestaurant = {};
-                        newRestaurant.name = restaurant.restaurant_name;
-                        newRestaurant.phoneNumber = restaurant.restaurant_phoneNumber;
-                        newRestaurant.dishes = [];
-                        const keys = [];
-                        const nameCountMap = {};
-                        for (const j = 0; j < rows.length; j++) {
-                            const item = rows[j];
-                            if (name == item.restaurant_name) {
-                                const dish = {};
-                                dish.realName = item.realName;
-                                dish.name = item.dishes_name;
-                                dish.count = item.dishes_count;
-                                dish.price = item.price;
-                                newRestaurant.dishes.push(dish);
-
-                                const count = nameCountMap[dish.name];
-                                if (count) {
-                                    count += dish.count;
-                                    nameCountMap[dish.name] = count;
-                                } else {
-                                    nameCountMap[dish.name] = dish.count;
-                                    keys.push(dish.name);
-                                }
-                            }
+                for (const i = 0; i < restaurantArr.length; i++) {
+                    const name = restaurantArr[i].restaurant_name;
+                    const newRestaurant = {};
+                    newRestaurant.name = restaurantArr[i].restaurant_name;
+                    newRestaurant.phoneNumber = restaurantArr[i].restaurant_phoneNumber;
+                    newRestaurant.dishes = [];
+                    const keys = [];
+                    // const nameCountMap = {};
+                    for (const j = 0; j < rows.length; j++) {
+                        const item = rows[j];
+                        if (name == item.restaurant_name) {
+                            const dish = {};
+                            dish.realName = item.realName;
+                            dish.name = item.dishes_name;
+                            dish.count = item.dishes_count;
+                            dish.price = item.price;
+                            newRestaurant.dishes.push(dish);
+                            // const count = nameCountMap[dish.name];
+                            // if(count) {
+                            //     count += dish.count;
+                            //     nameCountMap[dish.name] = count;
+                            // } else {
+                            //     nameCountMap[dish.name] = dish.count;
+                            //     keys.push(dish.name);
+                            // }
                         }
-                        newRestaurant.details = [];
-                        keys.forEach(function(name) {
-                            const count = nameCountMap[name];
-                            newRestaurant.details.push({
-                                name: name,
-                                count: count
-                            })
-                        })
-                        obj.restaurants.push(newRestaurant);
                     }
+                    newRestaurant.details = [];
+                    keys.forEach(function(name) {
+                        // const count = nameCountMap[name];
+                        newRestaurant.details.push({
+                            name: name,
+                            count: item.dishes_count
+                        })
+                    })
+                    obj.restaurants.push(newRestaurant)
                 }
             }
             return res.render('admin/order', obj);
         }
     })
+}
+
+exports.serverIndex = async (req, res) => {
+    if (req.method === 'GET') {
+        return res.render('admin/admin')
+    }
 }
