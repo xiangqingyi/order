@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="<%= staticdir %>/css/style.css">
     <script src="<%= staticdir %>/assets/plugins/jquery/dist/jquery.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<%= staticdir %>/assets/plugins/axios/axios.min.js"></script>
+    <script src="<%= staticdir %>/assets/plugins/axios/dist/axios.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/layer/dist/layer.js"></script>
     <script src="<%= staticdir %>/js/main.js"></script>
 
@@ -59,11 +59,11 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="/admin/restaurant/<%= item.id %>/dishes">菜单</a></li>
+                                        <li><a href="/order/server/showrestaurant/dishes/<%= item.id %>/">菜单</a></li>
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="/admin/restaurant/<%= item.id %>/show">详情</a></li>
+                                        <li><a href="/order/server/showrestaurant/<%= item.id %>">详情</a></li>
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="/admin/restaurant/<%= item.id %>/edit">编辑</a></li>
+                                        <li><a href="/order/server/editrestaurant/<%= item.id %>">编辑</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li id="delete_<%= item.id %>" style="padding-left: 20px">删除</li>
                                     </ul>

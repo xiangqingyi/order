@@ -13,7 +13,7 @@
     <script src="<%= staticdir %>/assets/plugins/jquery/dist/jquery.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="<%= staticdir %>/assets/plugins/layer/dist/layer.js"></script>
-    <script src="<%= staticdir %>/assets/plugins/axios/axios.min.js"></script>
+    <script src="<%= staticdir %>/assets/plugins/axios/dist/axios.min.js"></script>
     <script src="<%= staticdir %>/js/main.js"></script>
 
     <!--[if lt IE 9]>
@@ -109,7 +109,7 @@
 
     function handleDelete(item) {
         $('#delete_' + item.id).click(function () {
-            asyncPost(window.location.origin + '/order/server/delete/dish/<%= restaurantId %>/dishes/' + item.id + '/delete', null, function (response) { //请求成功时处理
+            asyncPost(window.location.origin + '/order/server/delete/dish/' + item.id, null, function (response) { //请求成功时处理
                 var errMsg = '删除失败';
                 if (response) {
                     if (response.code == 0) {
