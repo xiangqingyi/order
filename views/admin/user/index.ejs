@@ -59,9 +59,9 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="/admin/user/show/<%= item.id %>">详情</a></li>
+                                        <li><a href="/order/server/showuser/<%= item.id %>">详情</a></li>
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="/admin/user/edit/<%= item.id %>">编辑</a></li>
+                                        <li><a href="/order/server/edituser/<%= item.id %>">编辑</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li id="delete_<%= item.id %>" style="padding-left: 20px">删除</li>
                                     </ul>
@@ -105,7 +105,7 @@
 
     function handleDelete(item) {
         $('#delete_' + item.id).click(function () {
-            asyncPost(window.location.origin+'/order/server/delete' + item.id, null, function (response) { //请求成功时处理
+            asyncPost(window.location.origin+'/order/server/delete/user' + item.id, null, function (response) { //请求成功时处理
                 var errMsg = '删除失败';
                 if (response) {
                     if (response.code == 0) {
