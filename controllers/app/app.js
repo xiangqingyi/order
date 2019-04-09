@@ -139,7 +139,7 @@ exports.addOrderSuccess = async (req, res) => {
 }
 
 // 取消订单 (只取消当天的订单  所有的操作的都是基于当天的时间)
-exports.cancalOrder = async (req, res) => {
+exports.cancelOrder = async (req, res) => {
     if (req.method === 'POST') {
         const userid = req.session.user.id;
         if (userid) {

@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 
 function cancelOrder() {
-    axios.post(window.location.origin + '/order/app/ordercancl').then(function(res) {
+    axios.post(window.location.origin + '/order/app/ordercancel').then(function(res) {
         if (res.data.code === 0) {
             location.reload();
             return;
