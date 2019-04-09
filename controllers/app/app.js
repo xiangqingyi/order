@@ -87,7 +87,7 @@ exports.addOrder = async (req,res) => {
                                         code: 1
                                     })
                                 } else {
-                                    if (i === orders.length - 1){
+                                    if (Number(i) === orders.length - 1){
                                         return res.send({
                                             status: true,
                                             message: '提交订单成功',
