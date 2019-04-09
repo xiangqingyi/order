@@ -4,10 +4,11 @@ $(document).ready(function() {
     axios.get(window.location.origin + '/order/app/ordermineapi').then(function(res) {
         console.log(res);
         if (res) {
-            if (res.data.code === 1 && res.data.dishes && res.data.dishes.length) {
-                const totalPrice = 0;
+            if (res.data.code === 0 && res.data.dishes && res.data.dishes.length) {
+                var totalPrice = 0;
                 for (const i = 0; i < res.data.dishes.length; i++) {
-                    const item = res.data.dishes[i];
+                    var item = res.data.dishes[i];
+                    console.log(item);
                     totalPrice += (item.price * item.count);
                     $('#summary').append(
                         "<div style='font-size: 14px; color: #c72323;margin-top: 5px;margin-bottom: 5px>"
@@ -34,11 +35,6 @@ $(document).ready(function() {
                 })
             }
         }
-    }).then(function() {
-        $('#title').html('请求失败，请重试');
-        $('#okBtn').click(function() {
-            location.reload();
-        })
     })
 });
 
