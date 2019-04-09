@@ -10,8 +10,9 @@ $(document).ready(function() {
                     var item = res.data.dishes[i];
                     console.log(item);
                     totalPrice += (item.price * item.count);
+                    
                     $('#summary').append(
-                        "<div style='font-size: 14px; color: #c72323;margin-top: 5px;margin-bottom: 5px>"
+                        "<div style='font-size: 14px; color: #c72323;margin-top: 5px;margin-bottom: 5px'>"
                         + item.count + "个" + item.name + "</div>"
                     )
                     $('#title').html('总价：'+ totalPrice + '元');
@@ -19,7 +20,7 @@ $(document).ready(function() {
                     $('#okBtn').click(function() {
                         cancelOrder();
                     });
-                    return;
+                    // return;
                 }
             }
             $('#title').html(res.data.message);
