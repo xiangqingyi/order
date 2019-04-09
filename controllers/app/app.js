@@ -189,27 +189,35 @@ exports.getMineOrder = async (req,res) => {
                 })
             } else {
                 const arr = [];
-                for (const i = 0; i < orders.length; i++) {
-                    mysqlClientInstance.exec('SELECT name,price FROM t_dishes WHERE id=?',[orders[i].dishes_id], function(err, dishes) {
-                        if (err) {
-                            return res.send({
-                                code: 1,
-                                status: false,
-                                message: '服务端错误'
-                            })
-                        } else {
-                            dishes[0].count = orders[i].dishes_count;
-                            arr[i] = dishes[0]
-                            if (i == orders.length - 1) {
-                                return res.send({
-                                    code: 0, 
-                                    status: true,
-                                    message: '成功',
-                                    dishes: arr
-                                })
-                            }
-                        }
+                if (orders.length === 0) {
+                    return res.send({
+                        code: 2,
+                        message: '没有订单',
+                        status: true
                     })
+                } else {
+                    for (const i = 0; i < orders.length; i++) {
+                        mysqlClientInstance.exec('SELECT name,price FROM t_dishes WHERE id=?',[orders[i].dishes_id], function(err, dishes) {
+                            if (err) {
+                                return res.send({
+                                    code: 1,
+                                    status: false,
+                                    message: '服务端出错'
+                                }) 
+                            } else {
+                                dishes[0].count = orders[i].dishes_count;
+                                arr[i] = dishes[0];
+                                if (i == orders.length - 1) {
+                                    return res.send({
+                                        code: 0,
+                                        status: true,
+                                        message: '获取订单信息成功',
+                                        dishes: arr
+                                    })
+                                }
+                            }
+                        })
+                    }
                 }
             }
         })
