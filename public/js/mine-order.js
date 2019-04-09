@@ -6,7 +6,7 @@ $(document).ready(function() {
         if (res) {
             if (res.data.code === 0 && res.data.dishes && res.data.dishes.length) {
                 var totalPrice = 0;
-                for (const i = 0; i < res.data.dishes.length; i++) {
+                for (let i = 0; i < res.data.dishes.length; i++) {
                     var item = res.data.dishes[i];
                     console.log(item);
                     totalPrice += (item.price * item.count);
@@ -20,20 +20,20 @@ $(document).ready(function() {
                     $('#okBtn').click(function() {
                         cancelOrder();
                     });
-                    // return;
                 }
-            }
-            $('#title').html(res.data.message);
-            if (res.data.code === 2) {
-                $('#okBtn').html('去订餐');
-                $('#okBtn').click(function () {
-                    location.href = '/'
-                })
             } else {
-                $('#okBtn').html('重试');
-                $('#okBtn').click(function() {
-                    location.reload();
-                })
+                if (res.data.code === 2) {
+                    $('#title').html('当前还没有订单')
+                    $('#okBtn').html('去订餐');
+                    $('#okBtn').click(function() {
+                        location.href = '/order/app/restaurants';
+                    })
+                } else {
+                    $('#okBtn').html('重试');
+                    $('#okBtn').click(function() {
+                        location.reload();
+                    })
+                }
             }
         }
     })
@@ -41,10 +41,10 @@ $(document).ready(function() {
 
 
 function cancelOrder() {
-    axios.post(window.location.origin + '/order/app/ordercancel').then(function(res) {
+    axios.post(window.location.origin +'/order/app/ordercancel',{}).then(function(res) {
+        console.log(res);
         if (res.data.code === 0) {
             location.reload();
-            return;
         }
         showAlert(res.data.message ? res.data.message : '取消失败')
     })
