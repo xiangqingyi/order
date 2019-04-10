@@ -613,12 +613,12 @@ exports.ordersIndex = async (req, res) => {
             if (!rows) {
                 rows = [];
             }
-            const obj = {orders: rows};
+            let obj = {orders: rows};
             obj.restaurants = null;
             obj.totalPerson = 0;
             obj.totalPrice = 0;
-            const personArr = [];
-            const restaurantArr = [];
+            let personArr = [];
+            let restaurantArr = [];
             rows.forEach(function(item) {
                 console.log(item);
                 restaurantArr.push(item);
@@ -632,29 +632,22 @@ exports.ordersIndex = async (req, res) => {
                 obj.restaurants = [];
                 for (let i = 0; i < restaurantArr.length; i++) {
                     const name = restaurantArr[i].restaurant_name;
-                    const newRestaurant = {};
+                    let newRestaurant = {};
                     newRestaurant.name = restaurantArr[i].restaurant_name;
                     newRestaurant.phoneNumber = restaurantArr[i].restaurant_phoneNumber;
                     newRestaurant.dishes = [];
-                    const keys = [];
+                    let keys = [];
                     // const nameCountMap = {};
-                    for (const j = 0; j < rows.length; j++) {
-                        const item = rows[j];
+                    for (let j = 0; j < rows.length; j++) {
+                        let item = rows[j];
                         if (name == item.restaurant_name) {
-                            const dish = {};
+                            let dish = {};
                             dish.realName = item.realName;
                             dish.name = item.dishes_name;
                             dish.count = item.dishes_count;
                             dish.price = item.price;
                             newRestaurant.dishes.push(dish);
-                            // const count = nameCountMap[dish.name];
-                            // if(count) {
-                            //     count += dish.count;
-                            //     nameCountMap[dish.name] = count;
-                            // } else {
-                            //     nameCountMap[dish.name] = dish.count;
-                            //     keys.push(dish.name);
-                            // }
+
                         }
                     }
                     newRestaurant.details = [];
@@ -668,6 +661,7 @@ exports.ordersIndex = async (req, res) => {
                     obj.restaurants.push(newRestaurant)
                 }
             }
+            console.log(obj);
             return res.render('admin/order', obj);
         }
     })
