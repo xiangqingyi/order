@@ -630,7 +630,7 @@ exports.ordersIndex = async (req, res) => {
             const size = restaurantArr.length;  // 餐厅数量
             if (size > 0) {
                 obj.restaurants = [];
-                for (const i = 0; i < restaurantArr.length; i++) {
+                for (let i = 0; i < restaurantArr.length; i++) {
                     const name = restaurantArr[i].restaurant_name;
                     const newRestaurant = {};
                     newRestaurant.name = restaurantArr[i].restaurant_name;
