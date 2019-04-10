@@ -83,11 +83,11 @@
                     <% } %>
                     <% }); %>
                     <% } %>
-                    <div class="text-center">
+                    <!-- <div class="text-center">
                         <button id="sendBtn" class="btn btn-success"
                                 style="width: 50%; margin-top: 20px; margin-bottom: 20px">发送给商家
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <% } else { %>
                 <div class="h2 text-center" style="height: 300px; padding-top: 130px">
@@ -119,26 +119,26 @@
             $('#leftPage').hide()
             $('#rightPage').show();
         });
-        $('#sendBtn').click(function () {
-            var restaurants = '<%- JSON.stringify(restaurants) %>';
-            asyncPost('/admin/order/send', {restaurants: restaurants}, function (response) { //请求成功时处理
-                var errMsg = '发送失败';
-                if (response) {
-                    if (response.code == 0) {
-                        showAlert('发送成功', function () {
-                            location.reload();
-                        });
-                        return;
-                    }
+        // $('#sendBtn').click(function () {
+        //     var restaurants = '<%- JSON.stringify(restaurants) %>';
+        //     asyncPost('/admin/order/send', {restaurants: restaurants}, function (response) { //请求成功时处理
+        //         var errMsg = '发送失败';
+        //         if (response) {
+        //             if (response.code == 0) {
+        //                 showAlert('发送成功', function () {
+        //                     location.reload();
+        //                 });
+        //                 return;
+        //             }
 
-                    if (response.message) {
-                        errMsg = response.message;
-                    }
-                }
+        //             if (response.message) {
+        //                 errMsg = response.message;
+        //             }
+        //         }
 
-                showAlert(errMsg);
-            });
-        });
+        //         showAlert(errMsg);
+        //     });
+        // });
     });
 </script>
 </body>
