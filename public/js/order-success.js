@@ -3,9 +3,8 @@ $(document).ready(function() {
     axios.get(window.location.origin + '/order/app/ordermineapi').then(function(res) {
         console.log(res);
         if (res.data.code === 0 && res.data.dishes && res.data.dishes.length > 0) {
-            console.log(res);
             var totalPrice = 0;
-            for (const i = 0; i < res.data.dishes.length; i++) {
+            for (let i = 0; i < res.data.dishes.length; i++) {
                 const item = res.data.dishes[i];
                 totalPrice += (item.price * item.count);
 

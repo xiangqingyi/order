@@ -141,7 +141,7 @@ exports.addOrderSuccess = async (req, res) => {
 // 取消订单 (只取消当天的订单  所有的操作的都是基于当天的时间)
 exports.cancelOrder = async (req, res) => {
     if (req.method === 'POST') {
-        const userid = req.session.user.id;
+        const userid = 2;
         if (userid) {
             const today = dtime(new Date()).format('YYYY-MM-DD');
             mysqlClientInstance.exec('DELETE FROM t_order WHERE user_id=? AND selected_date=?',[userid, today],function(err, rows) {
@@ -196,7 +196,7 @@ exports.getMineOrder = async (req,res) => {
                         status: true
                     })
                 } else {
-                    for (const i = 0; i < orders.length; i++) {
+                    for (let i = 0; i < orders.length; i++) {
                         mysqlClientInstance.exec('SELECT name,price FROM t_dishes WHERE id=?',[orders[i].dishes_id], function(err, dishes) {
                             if (err) {
                                 return res.send({
