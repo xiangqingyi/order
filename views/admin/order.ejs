@@ -15,11 +15,6 @@
     <script src="<%= staticdir %>/assets/plugins/layer/dist/layer.js"></script>
     <script src="<%= staticdir %>/assets/plugins/axios/dist/axios.min.js"></script>
     <script src="<%= staticdir %>/js/main.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="/bower_components/respond/dest/respond.min.js"></script>
-    <script src="/bower_components/html5shiv/dist/html5shiv.min.js"></script>
-    <![endif]-->
 </head>
 <body style="font-size: 12px">
 
@@ -69,7 +64,7 @@
 
                 <div id="rightPage">
                     <div style="padding-left: 20px; padding-top: 5px; padding-bottom: 5px">
-                        今日订餐总人数：<%= totalPersion %>
+                        今日订餐总人数：<%= totalPerson %>
                     </div>
                     <div style="padding-left: 20px; padding-top: 5px; padding-bottom: 5px">
                         今日订餐总金额：<%= totalPrice %>￥
@@ -107,10 +102,6 @@
     </div>
 </div>
 
-<script src="/public/assets/plugins/jquery/dist/jquery.min.js"></script>
-<script src="/public/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/public/assets/plugins/layer/dist/layer.js"></script>
-<script src="/js/main.js"></script>
 <script>
     $(document).ready(function () {
         $('#leftPage').show()
